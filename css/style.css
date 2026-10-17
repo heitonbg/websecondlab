@@ -28,7 +28,7 @@ body {
   white-space: nowrap; clip-path: inset(100%); overflow: hidden;
 }
 
-/* Форма добавления */
+/* Форма */
 .add-form { margin-bottom: 24px; }
 .input-group { display: flex; gap: 8px; align-items: flex-start; }
 .input-wrapper { flex: 1; display: flex; flex-direction: column; gap: 4px; }
@@ -37,6 +37,16 @@ body {
   color: var(--text-main); padding: 10px; border-radius: var(--radius); font-family: inherit; font-size: 14px;
 }
 .input-group input:focus { outline: 2px solid var(--accent-orange); }
+
+/* Стилизация поля времени */
+.input-time {
+  color-scheme: dark; /* Делает иконку часов белой */
+}
+.input-time::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Для Chrome, чтобы иконка была видимой */
+  cursor: pointer;
+}
+
 .button--add {
   background-color: var(--bg-card); border: 1px solid var(--border-color); color: var(--accent-orange);
   width: 42px; height: 42px; border-radius: var(--radius); cursor: pointer;
@@ -52,10 +62,23 @@ body {
   background-color: var(--bg-card); border: 1px solid var(--border-color);
   border-radius: var(--radius); padding: 12px; gap: 12px;
 }
-.task--done .task__title, .task--done .task__body { text-decoration: line-through; color: var(--text-muted); }
+.task--done .task__title, .task--done .task__body, .task--done .task__time { 
+  text-decoration: line-through; color: var(--text-muted); 
+}
 .task__content { flex: 1; min-width: 0; }
-.task__title { font-size: 14px; font-weight: normal; margin-bottom: 4px; overflow-wrap: anywhere; color: var(--text-main); }
+.task__title { font-size: 14px; font-weight: normal; margin-bottom: 4px; overflow-wrap: anywhere; }
 .task__body { font-size: 12px; color: var(--text-muted); overflow-wrap: anywhere; }
+
+/* Время в карточке */
+.task__time { 
+  font-size: 11px; 
+  color: var(--accent-orange); 
+  margin-top: 6px; 
+  display: none; /* Скрыто по умолчанию */
+}
+.task__time:not(:empty) {
+  display: block; /* Показываем, только если есть время */
+}
 
 /* Меню */
 .task__actions-container { position: relative; display: flex; align-items: center; flex-shrink: 0; }
@@ -77,7 +100,7 @@ body {
 .task__menu button:hover { background-color: var(--border-color); color: var(--text-main); }
 .divider { width: 1px; height: 16px; background-color: var(--border-color); }
 
-/* МОДАЛЬНЫЕ ОКНА */
+/* Модалки */
 .modal {
   position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px;
 }
@@ -96,43 +119,19 @@ body {
 .btn-primary { background-color: var(--border-color); color: #fff; }
 .btn-secondary:hover, .btn-primary:hover { opacity: 0.8; }
 
-/* Стили для модалки РЕДАКТИРОВАНИЯ */
+/* Модалка редактирования */
 .modal__content--edit {
-  max-width: 360px;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  height: 70vh;
-  max-height: 500px;
-  padding-bottom: 16px;
+  max-width: 360px; text-align: left; display: flex; flex-direction: column;
+  height: 75vh; max-height: 550px; padding-bottom: 16px;
 }
-.edit-form {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 16px;
-}
+.edit-form { flex: 1; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 .edit-input, .edit-textarea {
-  width: 100%;
-  background-color: transparent; /* Убирает белый фон */
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-  padding: 10px;
-  border-radius: var(--radius);
-  font-family: inherit;
-  font-size: 14px;
-  resize: none;
+  width: 100%; background-color: transparent; border: 1px solid var(--border-color);
+  color: var(--text-main); padding: 10px; border-radius: var(--radius); font-family: inherit; font-size: 14px; resize: none;
 }
-.edit-input:focus, .edit-textarea:focus {
-  outline: 1px solid var(--accent-orange);
-}
-.edit-textarea {
-  flex: 1; /* Растягивает поле About */
-}
-.modal__actions--bottom {
-  justify-content: flex-end;
-}
+.edit-input:focus, .edit-textarea:focus { outline: 1px solid var(--accent-orange); }
+.edit-textarea { flex: 1; }
+.modal__actions--bottom { justify-content: flex-end; }
 
 /* Пустое состояние */
 .empty { text-align: center; margin-top: 40px; }

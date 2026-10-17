@@ -4,6 +4,7 @@ import { render } from './view.js';
 const form = document.querySelector('[data-add-form]');
 const inputTitle = document.getElementById('new-task');
 const inputBody = document.getElementById('new-task-body');
+const inputTime = document.getElementById('new-task-time'); // Поле времени при создании
 const errorEl = document.getElementById('new-task-error');
 const list = document.querySelector('[data-list]');
 const statusEl = document.querySelector('[data-status]');
@@ -12,6 +13,7 @@ const deleteModal = document.getElementById('delete-modal');
 const editModal = document.getElementById('edit-modal');
 const editTitleInput = document.getElementById('edit-title-input');
 const editBodyInput = document.getElementById('edit-body-input');
+const editTimeInput = document.getElementById('edit-time-input'); // Поле времени при редактировании
 
 let taskToDeleteId = null;
 let taskToEditId = null;
@@ -20,11 +22,12 @@ let lastFocusedElement = null;
 subscribe(render);
 render(state);
 
-// Добавление
+// Добавление (сбор данных)
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   const title = inputTitle.value.trim();
   const body = inputBody.value.trim();
+  const time = inputTime.value; // Берем значение времени
 
   if (!title) {
     errorEl.textContent = 'Введите заголовок задачи';
@@ -33,7 +36,7 @@ form.addEventListener('submit', (e) => {
   }
   
   errorEl.textContent = '';
-  addTask(title, body);
+  addTask(title, body, time);
   form.reset();
   inputTitle.focus();
 });
@@ -74,8 +77,10 @@ list.addEventListener('click', (e) => {
     lastFocusedElement = actionBtn;
     const task = state.tasks.find(t => t.id === id);
     
+    // Заполняем модалку, включая время
     editTitleInput.value = task.title;
     editBodyInput.value = task.body;
+    editTimeInput.value = task.time || ''; // Если времени нет, ставим пусто
     
     editModal.hidden = false;
     editTitleInput.focus();
@@ -99,18 +104,19 @@ document.getElementById('confirm-delete').addEventListener('click', () => {
   }
 });
 
-// Сохранение редактирования
+// Сохранение редактирования (сбор данных)
 document.getElementById('confirm-edit').addEventListener('click', () => {
   if (taskToEditId) {
     const newTitle = editTitleInput.value.trim();
     const newBody = editBodyInput.value.trim();
+    const newTime = editTimeInput.value; // Берем время из модалки
 
     if (!newTitle) {
       editTitleInput.focus();
       return;
     }
 
-    editTask(taskToEditId, newTitle, newBody);
+    editTask(taskToEditId, newTitle, newBody, newTime);
     statusEl.textContent = 'Задача обновлена';
     closeModal(editModal);
   }

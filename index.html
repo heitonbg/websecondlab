@@ -20,6 +20,9 @@
           <label class="visually-hidden" for="new-task-body">Описание задачи</label>
           <input id="new-task-body" name="body" type="text" maxlength="200" placeholder="About..." autocomplete="off">
           
+          <label class="visually-hidden" for="new-task-time">Время задачи</label>
+          <input id="new-task-time" name="time" type="time" class="input-time" autocomplete="off">
+          
           <p class="add-form__error" id="new-task-error" aria-live="polite"></p>
         </div>
         <button class="button--add" type="submit" aria-label="Добавить задачу">
@@ -46,6 +49,7 @@
       <div class="task__content">
         <h2 class="task__title"></h2>
         <p class="task__body"></p>
+        <p class="task__time"></p> <!-- Сюда будем выводить время -->
       </div>
       
       <div class="task__actions-container">
@@ -82,7 +86,7 @@
     </div>
   </div>
 
-  <!-- Модалка РЕДАКТИРОВАНИЯ (как на макете) -->
+  <!-- Модалка РЕДАКТИРОВАНИЯ -->
   <div class="modal" id="edit-modal" hidden>
     <div class="modal__overlay" data-close-modal></div>
     <div class="modal__content modal__content--edit" role="dialog" aria-modal="true" aria-labelledby="edit-title">
@@ -91,6 +95,8 @@
       <div class="edit-form">
         <input type="text" id="edit-title-input" class="edit-input" placeholder="Mini Input..." maxlength="200" required>
         <textarea id="edit-body-input" class="edit-textarea" placeholder="Max Input..." maxlength="500"></textarea>
+        <!-- Добавлено поле времени при редактировании -->
+        <input type="time" id="edit-time-input" class="edit-input" style="flex: none;">
       </div>
 
       <div class="modal__actions modal__actions--bottom">
