@@ -1,253 +1,140 @@
-/* Токены из макета */
 :root {
-  --color-bg-main: #1B1A17;
-  --color-bg-secondary: #1F1E1B;
-  --color-accent-orange: #A35709;
-  --color-accent-light: #FF8303;
-  --color-text-light: #F0E3CA;
-  --color-border: #A35709;
-  
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 16px;
-  --space-4: 24px;
-  
-  --font-main: system-ui, -apple-system, sans-serif;
+  --bg-dark: #1A1916;
+  --bg-card: #24221E;
+  --border-color: #A35709;
+  --accent-orange: #FF8303;
+  --text-main: #E6D5B8;
+  --text-muted: #8A7968;
+  --font-family: "Courier New", Courier, monospace;
   --radius: 4px;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  background-color: var(--color-bg-main);
-  color: var(--color-text-light);
-  font-family: var(--font-main);
-  line-height: 1.5;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-family);
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  padding: var(--space-4) var(--space-3);
+  padding: 20px;
 }
 
-/* Доступность */
+.container { width: 100%; max-width: 400px; }
+
 .visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  border: 0;
-  padding: 0;
-  white-space: nowrap;
-  clip-path: inset(100%);
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-}
-
-/* Контейнер */
-.container {
-  width: 100%;
-  max-width: 600px; /* Ограничение ширины для читаемости */
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  white-space: nowrap; clip-path: inset(100%); overflow: hidden;
 }
 
 /* Форма добавления */
-.add-form {
-  margin-bottom: var(--space-4);
-}
-
-.input-group {
-  display: flex;
-  gap: var(--space-2);
-}
-
+.add-form { margin-bottom: 24px; }
+.input-group { display: flex; gap: 8px; align-items: flex-start; }
+.input-wrapper { flex: 1; display: flex; flex-direction: column; gap: 4px; }
 .input-group input {
-  flex: 1;
-  background-color: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-light);
-  padding: var(--space-3);
-  border-radius: var(--radius);
-  font-family: inherit;
-  font-size: 16px;
-  min-width: 0; /* Защита от распирания */
+  width: 100%; background-color: var(--bg-card); border: 1px solid var(--border-color);
+  color: var(--text-main); padding: 10px; border-radius: var(--radius); font-family: inherit; font-size: 14px;
 }
-
-.input-group input::placeholder {
-  color: #888;
+.input-group input:focus { outline: 2px solid var(--accent-orange); }
+.button--add {
+  background-color: var(--bg-card); border: 1px solid var(--border-color); color: var(--accent-orange);
+  width: 42px; height: 42px; border-radius: var(--radius); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
+.button--add:hover { background-color: var(--accent-orange); color: var(--bg-dark); }
+.add-form__error { color: #ff6b6b; font-size: 12px; margin-top: 4px; min-height: 16px; }
 
-.input-group input:focus {
-  outline: 2px solid var(--color-accent-light);
-  outline-offset: 2px;
+/* Список */
+.task-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.task {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  background-color: var(--bg-card); border: 1px solid var(--border-color);
+  border-radius: var(--radius); padding: 12px; gap: 12px;
 }
+.task--done .task__title, .task--done .task__body { text-decoration: line-through; color: var(--text-muted); }
+.task__content { flex: 1; min-width: 0; }
+.task__title { font-size: 14px; font-weight: normal; margin-bottom: 4px; overflow-wrap: anywhere; color: var(--text-main); }
+.task__body { font-size: 12px; color: var(--text-muted); overflow-wrap: anywhere; }
 
-.button--primary {
-  background-color: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-  color: var(--color-accent-light);
-  width: 54px; /* Минимум 44px для тач-экранов */
-  height: 54px;
-  border-radius: var(--radius);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s, border-color 0.2s;
+/* Меню */
+.task__actions-container { position: relative; display: flex; align-items: center; flex-shrink: 0; }
+.task__menu-btn {
+  background: transparent; border: 1px solid var(--border-color); color: var(--accent-orange);
+  width: 28px; height: 28px; border-radius: var(--radius); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
 }
-
-.button--primary:hover {
-  background-color: var(--color-accent-orange);
-  color: #fff;
+.task__menu-btn[aria-expanded="true"] { display: none; }
+.task__menu {
+  display: flex; align-items: center; background-color: var(--bg-card);
+  border: 1px solid var(--border-color); border-radius: var(--radius); padding: 2px; gap: 2px; height: 28px;
 }
-
-.add-form__error {
-  color: #ff6b6b;
-  font-size: 14px;
-  margin-top: var(--space-1);
-  min-height: 21px;
+.task__menu[hidden] { display: none; }
+.task__menu button {
+  background: transparent; border: none; color: var(--accent-orange);
+  width: 24px; height: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center;
 }
+.task__menu button:hover { background-color: var(--border-color); color: var(--text-main); }
+.divider { width: 1px; height: 16px; background-color: var(--border-color); }
 
-/* Список задач */
-.task-list {
-  list-style: none;
+/* МОДАЛЬНЫЕ ОКНА */
+.modal {
+  position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.modal[hidden] { display: none; }
+.modal__overlay { position: absolute; inset: 0; background-color: rgba(0, 0, 0, 0.85); }
+.modal__content {
+  position: relative; background-color: var(--bg-card); border: 1px solid var(--accent-orange);
+  border-radius: var(--radius); width: 100%; max-width: 320px; padding: 24px; text-align: center;
+}
+.modal__title { font-size: 16px; margin-bottom: 24px; }
+.modal__actions { display: flex; gap: 8px; justify-content: center; }
+.btn-secondary, .btn-primary {
+  background-color: transparent; border: 1px solid var(--border-color); color: var(--text-main);
+  padding: 6px 16px; font-family: inherit; font-size: 12px; border-radius: var(--radius); cursor: pointer;
+}
+.btn-primary { background-color: var(--border-color); color: #fff; }
+.btn-secondary:hover, .btn-primary:hover { opacity: 0.8; }
+
+/* Стили для модалки РЕДАКТИРОВАНИЯ */
+.modal__content--edit {
+  max-width: 360px;
+  text-align: left;
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  height: 70vh;
+  max-height: 500px;
+  padding-bottom: 16px;
 }
-
-/* Карточка задачи */
-.task {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-3);
-  gap: var(--space-2);
-}
-
-.task__main {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-3);
+.edit-form {
   flex: 1;
-  min-width: 0;
-}
-
-.task__check {
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--color-accent-orange);
-  border-radius: 2px;
-  cursor: pointer;
-  flex-shrink: 0;
-  margin-top: 2px;
-  position: relative;
-}
-
-.task__check:checked {
-  background-color: var(--color-accent-orange);
-}
-
-.task__check:checked::after {
-  content: '';
-  position: absolute;
-  left: 6px;
-  top: 2px;
-  width: 4px;
-  height: 10px;
-  border: solid var(--color-text-light);
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-.task__check:focus-visible {
-  outline: 2px solid var(--color-accent-light);
-  outline-offset: 2px;
-}
-
-.task__title {
-  flex: 1;
-  min-width: 0;
-  overflow-wrap: anywhere; /* Перенос длинных слов */
-  cursor: pointer;
-  font-size: 16px;
-  word-break: break-word;
-}
-
-.task--done .task__title {
-  text-decoration: line-through;
-  color: #888;
-}
-
-/* Действия (кнопки редактирования и удаления) */
-.task__actions {
   display: flex;
-  gap: var(--space-1);
-  flex-shrink: 0;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
 }
-
-.task__btn {
-  background: transparent;
-  border: 1px solid var(--color-border);
-  color: var(--color-accent-light);
+.edit-input, .edit-textarea {
+  width: 100%;
+  background-color: transparent; /* Убирает белый фон */
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 10px;
   border-radius: var(--radius);
-  width: 36px;
-  height: 36px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.2s, background-color 0.2s;
+  font-family: inherit;
+  font-size: 14px;
+  resize: none;
 }
-
-.task__btn:hover {
-  background-color: var(--color-accent-orange);
-  color: #fff;
+.edit-input:focus, .edit-textarea:focus {
+  outline: 1px solid var(--accent-orange);
 }
-
-.task__btn:focus-visible {
-  outline: 2px solid var(--color-accent-light);
-  outline-offset: 2px;
+.edit-textarea {
+  flex: 1; /* Растягивает поле About */
 }
-
-/* Десктопные хаки для наведения */
-@media (hover: hover) {
-  .task__btn {
-    opacity: 0;
-  }
-  .task:hover .task__btn,
-  .task:focus-within .task__btn {
-    opacity: 1;
-  }
+.modal__actions--bottom {
+  justify-content: flex-end;
 }
 
 /* Пустое состояние */
-.empty {
-  text-align: center;
-  color: var(--color-text-light);
-  font-size: 20px;
-  margin-top: 40px;
-}
-
-/* Режим редактирования (когда инпут внутри задачи) */
-.task__edit-input {
-  flex: 1;
-  background: var(--color-bg-main);
-  border: 1px solid var(--color-accent-light);
-  color: var(--color-text-light);
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius);
-  font-family: inherit;
-  font-size: 16px;
-  min-width: 0;
-  width: 100%;
-}
-.task__edit-input:focus {
-  outline: none;
-}
+.empty { text-align: center; margin-top: 40px; }
+.empty p { font-size: 16px; margin-bottom: 4px; }
+.empty-line { width: 40px; height: 2px; background-color: var(--accent-orange); margin: 0 auto; }

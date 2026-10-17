@@ -9,24 +9,26 @@ export function render(state) {
 
 function createItem(task) {
   const item = template.content.firstElementChild.cloneNode(true);
-  const check = item.querySelector('.task__check');
-  const label = item.querySelector('.task__title');
-  const editBtn = item.querySelector('[data-action="edit"]');
-  const deleteBtn = item.querySelector('[data-action="delete"]');
+  const titleEl = item.querySelector('.task__title');
+  const bodyEl = item.querySelector('.task__body');
+  const menuBtn = item.querySelector('.task__menu-btn');
+  const menu = item.querySelector('.task__menu');
+  const actionBtns = menu.querySelectorAll('button');
 
-  // Связывание данных с DOM
   item.dataset.id = task.id;
   item.classList.toggle('task--done', task.done);
+  
+  // Безопасная вставка (защита от XSS)
+  titleEl.textContent = task.title;
+  bodyEl.textContent = task.body;
 
-  // Доступность и значения
-  check.id = `task-${task.id}`;
-  check.checked = task.done;
-  label.htmlFor = check.id;
-  label.textContent = task.title; // Безопасно от XSS
-
-  // Обновление ARIA-лейблов кнопок
-  editBtn.setAttribute('aria-label', `Редактировать задачу: ${task.title}`);
-  deleteBtn.setAttribute('aria-label', `Удалить задачу: ${task.title}`);
+  // Доступность
+  menuBtn.setAttribute('aria-label', `Действия: ${task.title}`);
+  actionBtns.forEach(btn => {
+    const action = btn.dataset.action;
+    let actionText = action === 'delete' ? 'Удалить' : action === 'edit' ? 'Редактировать' : 'Выполнено';
+    btn.setAttribute('aria-label', `${actionText} задачу: ${task.title}`);
+  });
 
   return item;
 }
