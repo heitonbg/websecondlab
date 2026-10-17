@@ -1,0 +1,253 @@
+/* Токены из макета */
+:root {
+  --color-bg-main: #1B1A17;
+  --color-bg-secondary: #1F1E1B;
+  --color-accent-orange: #A35709;
+  --color-accent-light: #FF8303;
+  --color-text-light: #F0E3CA;
+  --color-border: #A35709;
+  
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  
+  --font-main: system-ui, -apple-system, sans-serif;
+  --radius: 4px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-bg-main);
+  color: var(--color-text-light);
+  font-family: var(--font-main);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: var(--space-4) var(--space-3);
+}
+
+/* Доступность */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+/* Контейнер */
+.container {
+  width: 100%;
+  max-width: 600px; /* Ограничение ширины для читаемости */
+}
+
+/* Форма добавления */
+.add-form {
+  margin-bottom: var(--space-4);
+}
+
+.input-group {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.input-group input {
+  flex: 1;
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-light);
+  padding: var(--space-3);
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 16px;
+  min-width: 0; /* Защита от распирания */
+}
+
+.input-group input::placeholder {
+  color: #888;
+}
+
+.input-group input:focus {
+  outline: 2px solid var(--color-accent-light);
+  outline-offset: 2px;
+}
+
+.button--primary {
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  color: var(--color-accent-light);
+  width: 54px; /* Минимум 44px для тач-экранов */
+  height: 54px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.button--primary:hover {
+  background-color: var(--color-accent-orange);
+  color: #fff;
+}
+
+.add-form__error {
+  color: #ff6b6b;
+  font-size: 14px;
+  margin-top: var(--space-1);
+  min-height: 21px;
+}
+
+/* Список задач */
+.task-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Карточка задачи */
+.task {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-3);
+  gap: var(--space-2);
+}
+
+.task__main {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  flex: 1;
+  min-width: 0;
+}
+
+.task__check {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-accent-orange);
+  border-radius: 2px;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+  position: relative;
+}
+
+.task__check:checked {
+  background-color: var(--color-accent-orange);
+}
+
+.task__check:checked::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 4px;
+  height: 10px;
+  border: solid var(--color-text-light);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.task__check:focus-visible {
+  outline: 2px solid var(--color-accent-light);
+  outline-offset: 2px;
+}
+
+.task__title {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere; /* Перенос длинных слов */
+  cursor: pointer;
+  font-size: 16px;
+  word-break: break-word;
+}
+
+.task--done .task__title {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* Действия (кнопки редактирования и удаления) */
+.task__actions {
+  display: flex;
+  gap: var(--space-1);
+  flex-shrink: 0;
+}
+
+.task__btn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-accent-light);
+  border-radius: var(--radius);
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s, background-color 0.2s;
+}
+
+.task__btn:hover {
+  background-color: var(--color-accent-orange);
+  color: #fff;
+}
+
+.task__btn:focus-visible {
+  outline: 2px solid var(--color-accent-light);
+  outline-offset: 2px;
+}
+
+/* Десктопные хаки для наведения */
+@media (hover: hover) {
+  .task__btn {
+    opacity: 0;
+  }
+  .task:hover .task__btn,
+  .task:focus-within .task__btn {
+    opacity: 1;
+  }
+}
+
+/* Пустое состояние */
+.empty {
+  text-align: center;
+  color: var(--color-text-light);
+  font-size: 20px;
+  margin-top: 40px;
+}
+
+/* Режим редактирования (когда инпут внутри задачи) */
+.task__edit-input {
+  flex: 1;
+  background: var(--color-bg-main);
+  border: 1px solid var(--color-accent-light);
+  color: var(--color-text-light);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 16px;
+  min-width: 0;
+  width: 100%;
+}
+.task__edit-input:focus {
+  outline: none;
+}
